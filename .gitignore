@@ -1,0 +1,16 @@
+*.out
+*.bbl
+*.blg
+*.log
+*.toc
+*.aux
+*.synctex.gz
+*.swp
+*\.*_latexmk
+*.fls
+*-swp
+*.swo
+*\.*~
+*.pyc
+*.backup
+emulator_notes.pdf

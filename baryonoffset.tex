@@ -1,0 +1,130 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%arxiv
+\documentclass[a4paper,11pt]{article}
+% \pdfoutput=1
+\usepackage{jcappub}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\apjs}{ApJ Supplement}
+\newcommand{\apj}{ApJ}
+\newcommand{\aap}{AAP}
+\newcommand{\mnras}{MNRAS}
+\newcommand{\prd}{PRD}
+\newcommand{\gadget}{{\small GADGET}}
+\newcommand{\mpgadget}{{\small MP-GADGET}}
+
+\newcommand{\km}{k_{max}}
+
+\newcommand{\vect}[1]
+  {\mbox{\boldmath ${#1}$}}
+\newcommand{\matr}[1]
+  {\mbox{\bf \sf{#1}}}
+\newcommand{\eq}[1]
+  {Eq.~(\ref{equation:#1})}
+\newcommand{\eqs}[1]
+  {Eqs~(\ref{equation:#1})}
+\newcommand{\sect}[1]
+  {section~\ref{section:#1}}
+\newcommand{\sects}[1]
+  {sections~\ref{section:#1}}
+\newcommand{\tabl}[1]
+  {{\mbox Table~\ref{table:#1}}}
+\newcommand{\tabls}[1]
+  {{\mbox Tables~\ref{table:#1}}}
+\newcommand{\fig}[1]
+  {Fig.~\ref{Figure:#1}}
+\newcommand{\figs}[1]
+  {Figs.~\ref{Figure:#1}}
+\newcommand{\sourcesection}[1]{\noindent {\em{#1}} ---}
+
+\def\jcap{JCAP}        % Journal of Cosmology and Astro-Particle Physics
+
+\newcommand{\Lya}{Lyman-$\alpha$}
+\newcommand{\Msun}{\, h^{-1} M_\odot}
+\newcommand{\Zsun}{Z_\odot}
+\newcommand{\NHunit}{cm$^{-2}$}
+\newcommand{\sLLS}{\sigma_\mathrm{LLS}}
+\newcommand{\Mpc}{\,\mathrm{Mpc}}
+\newcommand{\Mpch}{\, h^{-1} \mathrm{Mpc}}
+\newcommand{\kpch}{\, h^{-1}\mathrm{kpc}}
+\newcommand{\hMpc}{\, h \mathrm{Mpc}^{-1}}
+\newcommand{\kms}{km~s$^{-1}$}
+\newcommand{\NHI}{N_\mathrm{HI}}
+
+\newcommand{\spb}[1]{\textcolor{red}{[\bf SPB: #1]} }
+\newcommand{\lv}[1]{\textcolor{green}{[\bf LV: #1]} }
+
+\newcommand{\edit}[1]{#1}
+
+%opening
+\title{Lagrangian Glasses for N-body Simulations of Baryons and Dark Matter}
+
+\author[a,1]{Simeon Bird,\note{Corresponding author}}
+\author[b]{Yu Feng}
+\author[c]{Chris Pederson}
+\author[c]{Andreu Font-Ribera}
+\affiliation[a]{Department of Physics \& Astronomy, University of California Riverside,\\ Riverside, CA 92521, USA}
+\affiliation[b]{Department of Physics, University of California Berkeley, \\Berkeley, CA 94720, USA}
+\affiliation[c]{Department of Physics \& Astronomy, University College London,\\Gower Street, London WC1E 6BT, UK}
+
+\emailAdd{sbird@ucr.edu}
+\emailAdd{yfeng1@berkeley.edu}
+\emailAdd{christian.pedersen.17@ucl.ac.uk}
+\emailAdd{a.font@ucl.ac.uk}
+
+\abstract{
+XXXX
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Cosmological N-body simulations are a well-established technique for understanding non-linear structure formation. Most simulations considered the total growth of structure in the Universe. These evolve a single fluid, corresponding to a combination of cold dark matter (CDM) and baryons, under gravity, under the approximation that these two components trace each other. However, at early times the baryons couple to radiation and thus have their clustering erased on scales less than the comoving horizon scale at recombination. Furthermore, the well-known baryon acoustic oscillation peak is embedded in the baryonic power spectrum but not in the CDM power spectrum. As the Universe evolves, the process of structure formation gradually erases the difference between baryons and CDM, and at $z=0$ they differ by less than $1\%$. Nevertheless, at higher redshift they differ substantially, by up to $8\%$ at $z=10$ and $3\%$ at $z=2$. These differences may be relevant when interpreting, for example, upcoming observations of the \Lya~forest or future percent-accurate galaxy surveys \cite{Schneider:2016}.
+
+Many simulations including baryons (and modeling their hydrodynamics) include them by initializing both CDM and baryons using the total matter spectrum \cite[e.g.][]{Emberson:2018}. A minority interested in high redshift structure growth initialize CDM and baryons using the transfer functions for their respective species. In this case accurate evolution requires also using separate velocity transfer functions for the CDM and baryons.
+
+There is, however, a well-known problem with such simulations \cite{OLeary:2012, Angulo:2013}. Simulations generally wish to achieve equal mass resolution in baryons and CDM. As $\Omega_\mathrm{b} < \Omega_\mathrm{CDM}$, this implies that the mass of baryonic particles differ from the mass of CDM particles. These unequal masses can induce unphysical coupling of the lower mass (baryonic) particles to the higher mass (CDM) particles \cite{OLeary:2012}.
+
+Linear theory makes a prediction for the ratio the baryon power spectrum, $P_b(k)$ and the CDM power spectrum $P_\mathrm{CDM}$. of matter power spectra for baryons and CDM as a function of redshift to the predictions of linear theory and showed that the default
+
+
+\footnote{\cite{Angulo:2013} have more power in the baryon component than linear theory predicts for an offset grid simulation. For a similar simulation, we find less power than predicted by linear theory. It is unclear why this discrepancy occurs, but it seems likely to be due to differences in the initial velocity distribution or the exact setup of the initial particle grid.}
+
+In this paper we show that initializing the baryons using a Lagrangian glass rather than a grid offset from the CDM resolves this problem. We show that this technique reproduces the linear theory ratio between CDM and baryons
+
+
+\section{Methods}
+
+In this Section we describe our methods for initializing cosmological simulations.
+
+\subsection{Initialisation of Particle Velocities and Displacements}
+
+\subsection{Grid and Glass Particle Distributions}
+
+\section{Results}
+
+Figure 1: the power spectrum ratios with an offset grid.
+Figure 1a: The total power spectrum with an offset grid.
+Figure 2: the power spectrum ratios with a glass for baryons
+Figure 3: incoherent glasses for both components.
+Figure 4: The total power spectrum with a glass for baryons.
+
+A coherent glass has more noise on large scales.
+
+If a grid is desired, since the error comes from scattering of unequal mass particles, one may also over-sample CDM relative to baryons by a factor of $\Omega_\mathrm{CDM}/\Omega_\mathrm{b}$.
+
+\section{Conclusions}
+
+Use a glass.
+
+\acknowledgments
+
+We thank Matt McQuinn for helpful discussions.
+
+\bibliographystyle{JHEP}
+\bibliography{offset}
+\end{document}
