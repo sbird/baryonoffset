@@ -22,7 +22,7 @@ colors = {"L1000-baronlyglass": "blue", "L300-adaptive": '#1f77b4', "L300-baryon
 colorsbar = {"L1000-baronlyglass": '#bcbdff', "L300-adaptive": "#7f7f7f", "L300-baryonlyglass-3": '#d627ff',
              "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen'
             }
-datadir = os.path.expanduser("~/data/linear-growth-offset")
+datadir = "powers"
 
 plotdir = "plots"
 
