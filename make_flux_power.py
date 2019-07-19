@@ -16,11 +16,11 @@ def make_flux_power(simdir):
     for snap in range(0,30):
         try:
             spec = Spectra(snap, simdir, None, None, savefile="lya_forest_spectra.hdf5")
-            (kf1, pkf1) = spec.get_flux_power_1D()
-            nomf = os.path.join(os.path.join(simdir,"SPECTRA_"+str(snap).rjust(3,'0')), "flux_power_no_mf_%d.txt" % spec.red)
+            (kf1, pkf1) = spec.get_flux_power_1D(tau_thresh=1e19)
+            nomf = os.path.join(os.path.join(simdir,"SPECTRA_"+str(snap).rjust(3,'0')), "flux_power_no_t19_mf_%.3f.txt" % spec.red)
             np.savetxt(nomf, (kf1, pkf1))
-            (kf1, spkf1) = spec.get_flux_power_1D(mean_flux_desired=obs_mean_tau(spec.red))
-            mf = os.path.join(os.path.join(simdir,"SPECTRA_"+str(snap).rjust(3,'0')), "flux_power_mf_%d.txt" % spec.red)
+            (kf1, spkf1) = spec.get_flux_power_1D(mean_flux_desired=obs_mean_tau(spec.red),tau_thresh=1e19)
+            mf = os.path.join(os.path.join(simdir,"SPECTRA_"+str(snap).rjust(3,'0')), "flux_power_t19_mf_%.3f.txt" % spec.red)
             np.savetxt(mf, (kf1, spkf1))
         except IOError:
             pass

@@ -127,17 +127,20 @@ def plot_power(zz, sims, plottitle, total=False):
     fig2.savefig(os.path.join(plotdir, plottitle + '_%d_class.pdf' % zz))
     fig2.clf()
 
-def get_fpk(sim, snap, mf=True):
+def get_fpk(sim, snap, mf=True, t19=True):
     """Load the flux power from a text file"""
     filestr = "flux_power"
     if not mf:
         filestr += "_no"
+    if t19:
+        filestr += "_t19"
     filestr += "_mf_*.txt"
-    nomf = glob.glob(os.path.join(os.path.join(sim,"SPECTRA_"+str(snap).rjust(3,'0')), filestr))
+    filename = os.path.join(os.path.join(sim,"SPECTRA_"+str(snap).rjust(3,'0')), filestr)
+    nomf = glob.glob(filename)
     fpknomf = np.loadtxt(nomf[0])
-    regex = re.search(r"_mf_([0-9\.]*).txt", nomf)
+    regex = re.search(r"_mf_([0-9\.]*).txt", nomf[0])
     zz = float(regex.groups()[0])
-    return (fpknomf[:,0], fpknomf[:,1], zz)
+    return (fpknomf[0,:], fpknomf[1,:], zz)
 
 def plot_flux_power(sim1, sim2, snap):
     """Plot the relative flux power spectrum."""
@@ -149,19 +152,27 @@ def plot_flux_power(sim1, sim2, snap):
     fig = Figure()
     canvas = FigureCanvasPdf(fig)
     ax = fig.add_subplot(111)
-    ax.semilogx(kf1, pkf1/pkf2, ls="--", label=r"w/o $\bar{tau}$ rescaling", color="black")
+    ax.semilogx(kf1, pkf1/pkf2, ls="--", label=r"w/o $\bar{\tau}$ rescaling", color="black")
     #With mean flux rescaling
     (kf1, spkf1, zz1) = get_fpk(sim1, snap, mf=True)
     (_, spkf2, zz2) = get_fpk(sim2, snap, mf=True)
-    ax.semilogx(kf1, spkf1/spkf2, ls="-", label=r"with $\bar{tau}$ rescaling", color="blue")
+    ax.semilogx(kf1, spkf1/spkf2, ls="-", label=r"with $\bar{\tau}$ rescaling", color="blue")
+#     (kf1, spkf1, zz1) = get_fpk(sim1, snap, mf=False, t19=False)
+#     (_, spkf2, zz2) = get_fpk(sim2, snap, mf=False, t19=False)
+#     ax.semilogx(kf1, spkf1/spkf2, ls="-", label=r"without DLAs removed", color="blue")
     ax.legend(loc="upper right")
-    ax.xlim(xmax=0.1)
+    ax.set_xlim(xmin=0.001,xmax=0.05)
+    ax.set_xlabel(r"$k_\mathrm{F}$ (s/km)")
+    ax.set_ylabel(r"$P_\mathrm{F}(k, \mathrm{species}) / P_\mathrm{F}(k, \mathrm{total})$")
+    ax.set_ylim(0.9, 1.1)
     fig.tight_layout()
-    fig.savefig(os.path.join(plotdir, "flux_power_%d.pdf" % zz1))
+    fig.savefig(os.path.join(plotdir, "flux_power_%.3f.pdf" % zz1))
     fig.clf()
 
 if __name__ == "__main__":
-    for red in (2, 4, 9):
-        plot_power(red, ["L300"], "literature", total=True)
-        plot_power(red, ["L300-baryonlyglass-3", "L1000-baronlyglass"], "halfglass")
-        plot_power(red, ["L300-baryonlyglass-3", "L300-oversample","L300-adaptive"], "oversample")
+#     for red in (2, 4, 9):
+#         plot_power(red, ["L300"], "literature", total=True)
+#         plot_power(red, ["L300-baryonlyglass-3", "L1000-baronlyglass"], "halfglass")
+#         plot_power(red, ["L300-baryonlyglass-3", "L300-oversample","L300-adaptive"], "oversample")
+    for snap in (1, 6, 10):
+        plot_flux_power("powers/L60-baronlyglass/output/", "powers/L60/output/", snap)
