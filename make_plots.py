@@ -1,16 +1,17 @@
 """Plot relative power spectra from simulations with Nbodykit"""
+import re
 import os
 import os.path
+import glob
 import numpy as np
 import scipy.interpolate
-
 import matplotlib
 matplotlib.use("PDF")
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
 
 simnames = {"L1000-baronlyglass": "BIGGLASS", "L300-adaptive": "ADAPTIVE", "L300-baryonlyglass-3": "HALFGLASS",
-            "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID"
+            "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID", "L60": "TOTALT", "L60-baronlyglass" : "DIFFERENT",
            }
 
 lss = {"L1000-baronlyglass": "-", "L300-adaptive": "-.", "L300-baryonlyglass-3": "--",
@@ -125,6 +126,39 @@ def plot_power(zz, sims, plottitle, total=False):
     fig2.tight_layout()
     fig2.savefig(os.path.join(plotdir, plottitle + '_%d_class.pdf' % zz))
     fig2.clf()
+
+def get_fpk(sim, snap, mf=True):
+    """Load the flux power from a text file"""
+    filestr = "flux_power"
+    if not mf:
+        filestr += "_no"
+    filestr += "_mf_*.txt"
+    nomf = glob.glob(os.path.join(os.path.join(sim,"SPECTRA_"+str(snap).rjust(3,'0')), filestr))
+    fpknomf = np.loadtxt(nomf[0])
+    regex = re.search(r"_mf_([0-9\.]*).txt", nomf)
+    zz = float(regex.groups()[0])
+    return (fpknomf[:,0], fpknomf[:,1], zz)
+
+def plot_flux_power(sim1, sim2, snap):
+    """Plot the relative flux power spectrum."""
+    #Without mean flux rescaling
+    (kf1, pkf1, zz1) = get_fpk(sim1, snap, mf=False)
+    (kf2, pkf2, zz2) = get_fpk(sim2, snap, mf=False)
+    assert zz1 == zz2
+    assert np.all(kf1 == kf2)
+    fig = Figure()
+    canvas = FigureCanvasPdf(fig)
+    ax = fig.add_subplot(111)
+    ax.semilogx(kf1, pkf1/pkf2, ls="--", label=r"w/o $\bar{tau}$ rescaling", color="black")
+    #With mean flux rescaling
+    (kf1, spkf1, zz1) = get_fpk(sim1, snap, mf=True)
+    (_, spkf2, zz2) = get_fpk(sim2, snap, mf=True)
+    ax.semilogx(kf1, spkf1/spkf2, ls="-", label=r"with $\bar{tau}$ rescaling", color="blue")
+    ax.legend(loc="upper right")
+    ax.xlim(xmax=0.1)
+    fig.tight_layout()
+    fig.savefig(os.path.join(plotdir, "flux_power_%d.pdf" % zz1))
+    fig.clf()
 
 if __name__ == "__main__":
     for red in (2, 4, 9):
