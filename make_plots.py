@@ -167,7 +167,9 @@ def plot_flux_power(sim1, sim2, snap):
     ax.set_ylabel(r"$P_\mathrm{F}(k, \mathrm{species}) / P_\mathrm{F}(k, \mathrm{total})$")
     ax.set_ylim(0.9, 1.1)
     fig.tight_layout()
-    fig.savefig(os.path.join(plotdir, "flux_power_%.3f.pdf" % zz1))
+    redstr = "%.3f" % zz1
+    redstr = re.sub("\.","_",redstr)
+    fig.savefig(os.path.join(plotdir, "flux_power_"+redstr+".pdf"))
     fig.clf()
     ax = fig.add_subplot(111)
     ax.loglog(kf1, pkf1, ls="--", label=r"Species transfer", color="black")
@@ -176,7 +178,7 @@ def plot_flux_power(sim1, sim2, snap):
     ax.set_ylabel(r"$P_\mathrm{F}(k)$ (km/s)")
     ax.legend(loc="upper right")
     fig.tight_layout()
-    fig.savefig(os.path.join(plotdir, "flux_power_nonrel_%.3f.pdf" % zz1))
+    fig.savefig(os.path.join(plotdir, "flux_power_nonrel_"+redstr+".pdf"))
     fig.clf()
 
 if __name__ == "__main__":

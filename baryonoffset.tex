@@ -86,13 +86,11 @@ XXXX
 
 Cosmological N-body simulations are a well-established technique for understanding non-linear structure formation. Most simulations considered the total growth of structure in the Universe. These evolve a single fluid, corresponding to a combination of cold dark matter (CDM) and baryons, under gravity, under the approximation that these two components trace each other. However, at early times the baryons couple to radiation and thus have their clustering erased on scales less than the comoving horizon scale at recombination.
 Furthermore, the well-known baryon acoustic oscillation peak is embedded in the baryonic power spectrum but not in the CDM power spectrum.\YF{I think this is incorrect as presented. BAO is in CDM power as well due to CDM baryon trace each other. need rewording. replacing embedded with induced?}
-As the Universe evolves, the process of structure formation gradually erases the difference between baryons and CDM, and at $z=0$ they differ by less than $1\%$. Nevertheless, at higher redshift they differ substantially, by up to $8\%$ at $z=10$ and $3\%$ at $z=2$. \YF{which k?} These differences may be relevant when interpreting, for example, upcoming observations of the \Lya~forest or future galaxy surveys \cite{Schneider:2016}.
+As the Universe evolves, the process of structure formation gradually erases the difference between baryons and CDM, and at $z=0$ they differ by less than $1\%$. Nevertheless, at higher redshift they differ substantially, by up to $8\%$ at $z=10$ and $3\%$ at $z=2$ for $ k > 0.02$ k/Mpc. These differences may be relevant when interpreting, for example, upcoming observations of the \Lya~forest or future galaxy surveys \cite{Schneider:2016}.
 
-Many simulations including baryons (and modeling their hydrodynamics) include them by initializing both CDM and baryons using the total matter spectrum \cite[e.g.][]{Emberson:2018}. A minority interested in high redshift structure growth initialize CDM and baryons using the transfer functions for their respective species. In this case accurate evolution requires also using separate velocity transfer functions for the CDM and baryons. To avoid infinite forces, baryonic and CDM particles are initially offset by half the mean inter-particle spacing. \YF{gravity is smoothed and there is never infinite force. 'To avoid particle pairing'?}
+Many simulations including baryons (and modeling their hydrodynamics) include them by initializing both CDM and baryons using the total matter spectrum \cite[e.g.][]{Emberson:2018}. A minority interested in high redshift structure growth initialize CDM and baryons using the transfer functions for their respective species. In this case accurate evolution requires also using separate velocity transfer functions for the CDM and baryons. In an attempt to regularise tree construction and avoid unphysical two-body couplings, baryonic and CDM particles are initially offset by half the mean inter-particle spacing.
 
-There is, however, a well-known problem with such simulations \cite{OLeary:2012, Angulo:2013}. Simulations generally wish to achieve equal mass resolution in baryons and CDM. As $\Omega_\mathrm{b} < \Omega_\mathrm{CDM}$, this implies that the mass of baryonic particles differs from the mass of CDM particles.
-\AFR{I find it confusing to say "equal mass resolution" when each species has different particle mass. 
-I guess this is simulation jargon, but I'd try to find an alternative way to explain it.} \YF{I think it may be equal fractional mass resolution with a footnote defining it is equal particle mean separation.}
+There is, however, a well-known problem with such simulations \cite{OLeary:2012, Angulo:2013}. Simulations generally wish to achieve equal average spatial separation and thus equal fractional mass resolution in baryons and CDM. As $\Omega_\mathrm{b} < \Omega_\mathrm{CDM}$, this implies that the mass of baryonic particles differs from the mass of CDM particles.
  These unequal masses can induce unphysical coupling of the lower mass (baryonic) particles to the higher mass (CDM) particles \cite{OLeary:2012}, in extreme cases binding the lighter particles to orbiting the heavier ones. A simple analytic derivation of this effect is shown in Appendix B of Ref.~\cite{OLeary:2012}. Furthermore, linear theory makes a prediction for  as a function of redshift. Ref.~\cite{Angulo:2013} showed that the ratio between the baryon power spectrum, $P_b(k)$, and the CDM power spectrum $P_\mathrm{CDM}(k)$, in Gadget-3 \cite{Springel:2005} simulations does not by default agree with the predictions of linear theory, due to this spurious inter-particle coupling.\footnote{\cite{Angulo:2013} have more power in the baryon component than linear theory predicts. For a similar simulation, we find less power than predicted by linear theory. It is unclear why this discrepancy occurs, but it seems likely to be due to differences in the initial velocity distribution or the exact setup of the initial particle grid.} The practical impact of this effect is fortunately reduced because the coupling conserves total momentum, and thus shows the correct evolution of the total matter spectrum.
 
 Refs~\cite{OLeary:2012, Angulo:2013} showed that spurious couplings can be ameliorated by increasing the gravitational softening length of the particles at high redshift. This is done adaptively, setting the baryonic softening length equal to the SPH smoothing length of the baryonic particles. This effectively disables the short range gravitational force at high redshift, when the Universe is homogeneous and thus SPH smoothing lengths are of order the mean inter-particle spacing. We emphasize that on cosmological scales this procedure cannot be justified on the basis of hydrodynamics. The coupling effect is purely gravitational, and persists even if, as in the simulations of Ref.~\cite{Angulo:2013} and the ones presented here, hydrodynamical pressure forces are disabled. Adaptive softening is thus simply an easy way of increasing the softening only at the high redshifts where particle coupling is most acute. Since the small-scale gravitational force is disabled at high redshift, adaptive softening strongly suppresses the small-scale clustering of the baryons in low density regions outside galaxies. This makes it unsuitable for some applications, in particular simulations of the \Lya~forest. Nevertheless, adaptive softening has widely used in recent simulations \cite[e.g][]{Paco:2018}.\footnote{Ref.~\cite{Valkenburg:2017} instead achieved the same effect by setting the cutoff distance for the small-scale force to a small fraction of the PM grid size.}
@@ -163,8 +161,7 @@ Particle displacements are set using the columns for $\delta_\mathrm{CDM, b}$. N
 \subsection{Example Simulations}
 
 We perform toy test simulations with $2\times 256^3$ particles and box sizes of $300$ Mpc/h (comoving). Our initial conditions are generated at $z=99$ and we compare to linear theory power spectra and transfer functions generated using CLASS \cite{CLASS}. We assume a periodic box and a standard $\Lambda$CDM cosmology with $\Omega_\mathrm{M} = 0.3$, $h = 0.67$, $n_s = 0.97$. We have set $\Omega_\mathrm{b} = 0.05$ so that $\Omega_{\mathrm{CDM}}/ \Omega_\mathrm{b} = 5$.
-To ensure that structure grows linearly even at low redshifts we artificially suppress the initial power spectrum by a factor of $100$, setting $A_s = 2.14\times 10^{-11}$, and thus $\sigma_8 = 8\times 10^{-3}$.
-\AFR{I believe you mean  $\sigma_8 = 8\times 10^{-2}$. 100 times less power, 10 times smaller rms.}
+To ensure that structure grows linearly even at low redshifts we artificially suppress the initial power spectrum by a factor of $100$, setting $A_s = 2.14\times 10^{-11}$, and thus $\sigma_8 = 8\times 10^{-2}$.
 
 To confirm that our results continue to hold outside of our toy examples we also performed a larger simulation with a box of $1$ Gpc/h (a scale large enough that the baryon and CDM transfer functions are approximately equal on scales of the box) and $768^3$ particles.
 
@@ -181,10 +178,13 @@ Name & Box & $N_\mathrm{CDM}^{1/3}$ & $N_\mathrm{baryon}^{1/3}$ & Comments  \\
 \texttt{UNDERSAMP}  &   $300$ & $256$ & $150$ & Two offset particle grids, same particle masses. \\
 \texttt{HALFGLASS}  &   $300$ & $256$ & $256$ & Baryons on a glass, CDM on a grid, see text. \\
 \texttt{BIGGLASS}  &   $1000$ & $768$ & $768$ & As HALFGLASS. \\
+\texttt{FOREST}  &   $60$ & $512$ & $512$ & Baryons on a glass, CDM on a grid. \\
+\texttt{TOTFOREST}  &   $60$ & $512$ & $512$ & Total matter transfer function. \\
+
 \hline
 \end{tabular}
 \end{center}
-\caption{Table of simulations. Box size is in comoving Mpc/h. $\sigma_8 = 0.008$ throughout. \YF{0.008? would mean glass noise is very very high.}}
+\caption{Table of simulations. Box size is in comoving Mpc/h. $\sigma_8 = 0.08$ except for the FOREST and TOTFOREST simulations, which have $\sigma_8 = 0.8$.}
 \label{tab:simulations}
 \end{table}
 
@@ -211,28 +211,58 @@ Name & Box & $N_\mathrm{CDM}^{1/3}$ & $N_\mathrm{baryon}^{1/3}$ & Comments  \\
   \label{fig:adaptive}
 \end{figure}
 
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{plots/oversample_9_relpower.pdf}
+  \includegraphics[width=0.5\textwidth]{plots/oversample_9_class.pdf}
+\caption{Results for other simulation strategies successful at reproducing the relative power of baryons and CDM at $z=9$. Shown are: (ADAPTIVE) initializing particles on two regular grids, offset by half a grid spacing, but with particles evolved using an adaptive softening length for the gas. (UNDERSAMP) Using two regular grids with the number of CDM particle $5$ times larger than the number of baryon particles. Also show is the HALFGLASS simulation, for comparison. We have set $\sigma_8 = 0.008$. (Left) Ratio of gas to CDM power spectra, $P_\mathrm{bar}/P_\mathrm{CDM}(k)$, at $z=2$ for the simulation (solid) and linear theory from CAMB (dash). (Right) Ratio of simulated to linear power spectra, $P_\mathrm{sim}/P_\mathrm{CLASS}(k)$ for gas (orange) and CDM (blue).}
+  \label{fig:adaptivez9}
+\end{figure}
+
+
 Figure~\ref{fig:offsetgrids} shows the baryon and cold dark matter power spectra for a cosmological simulation, compared to the output of CLASS at the same redshift. This simulation, TWOGRID, was initialized using the standard method of two grids of particles, one for baryons and one for cold dark matter, offset by a constant factor. Figure~\ref{fig:offsetgrids} illustrates the problem we aim to solve. Although the total matter power spectrum obeys the linear predictions, scattering between the baryon and DM particles causes the DM power spectrum to be over-predicted and the baryon power spectrum to be under-predicted, leading to an error in the relative power spectrum. 
-\AFR{Do we really understand why the measured high-k power is below linear theory? I find it very suspicious.}
+\AFR{Do we really understand why the measured high-k power is below linear theory? I find it very suspicious.}\spb{It is not really suspicious: it is just the 1-halo term from the particle grid. I will mark the Nyquist frequency on the plot and then it will be clearer.}
 This problem has been discussed in, for example, Ref.~\cite{Angulo:2013}, although the magnitude of the error in our simulation does not match their results, presumably because of differences in the setting up of the regular grid.
 
 We have confirmed that these results are independent of the force accuracy of the simulation and are not connected to adaptive timestepping or the length of the timesteps. For the former, we have performed small simulations where the short range force was evaluated using an $N^2$ pairwise gravity solver, simulations where the tree opening angle was changed and simulations where the split scale between the short and long-range forces was altered. Although the total power in the box in some cases changed (to the extent expected given the new force accuracy) on small scales, the power ratio between the baryons and cold dark matter did not.
-We also confirmed that our results were the same when all particles had the same timestep and when the long-range PM timestep $4$ shorter. We have also confirmed that our results are independent of box size and particle number.
+We also confirmed that our results were the same when all particles had the same timestep and when the long-range PM timestep was $4$ times shorter. We have also confirmed that our results are independent of box size and particle number.
 
 Figure~\ref{fig:baryonglass} shows the baryon and cold dark matter power spectra for cosmological simulations initialized using a glass for the baryons, generated using the procedure described in Section~\ref{sec:glass}. The agreement with linear theory is substantially improved, demonstrating that a Lagrangian glass can suppress the unphysical scattering between the baryonic and DM particles.
 
 This result may at first appear puzzling. Effects of the particle grid should be confined to small scales close to the mean inter-particle separation. However, because the grid structure is repeated across the whole box, each baryonic particle encounters the same scattering force, and so the effect is also replicated across the box and shows up as a scale-independent error. \YF{Alternatively speaking, there is a non-linear growth term that is proportional to the phase-angle between baryon and CDM. If they started from coherent grids, that cross term is larger than the realistic case, and produces a bias at all scales. $d_{bNL} = d_{b} + ... + (\alpha d_b + \beta d_cdm) <d_{b}, d_{cdm}> + ...$ $\alpha, \beta$ does depend on the type of gravity solver and mass difference.}
 
-Using a Lagrangian glass for the baryons does not completely prevent unphysical force scatterings, but, because the particles are distributed irregularly, it ensures that the effect of this scattering is confined to small scales and does not change the large-scale growth. The glass does produce a noise power proportional to $k^4$ which in our case causes spurious small-scale growth. Since these are caused by the baryons, they would however be suppressed in a realistic simulation following gas pressures. Their relative importance would also be suppressed if we had not suppressed the initial power spectrum to ensure purely linear growth.
-\AFR{How about running a simulation with hydro on? And may be with 10\% power instead of 1\%? I'm really worried about how bad the power is at k=0.5 h/Mpc. We argue that the noise would be lower with hydro, but I'm not sure how much to trust this without running an actual test.} 
+Using a Lagrangian glass for the baryons does not completely prevent unphysical force scatterings, but, because the particles are distributed irregularly, it ensures that the effect of this scattering is confined to small scales and does not change the large-scale growth. The glass does produce a noise power proportional to $k^4$ which in our case causes spurious small-scale growth. Since these are caused by the baryons, they would however be suppressed in a realistic simulation following gas pressures. We have performed a simulation with $\sigma_8 = 0.8$ with very similar results as Figure~\ref{fig:baryonglass}, demonstrating that our results are not being affected by the relatively large glass noise.
+\AFR{How about running a simulation with hydro on? I'm really worried about how bad the power is at k=0.5 h/Mpc. We argue that the noise would be lower with hydro, but I'm not sure how much to trust this without running an actual test.}
 
 As described in appendix B of Ref.~\cite{OLeary:2012}, the unphysical scatterings shown in Figure~\ref{fig:offsetgrids} occur because of the unequal particles masses, which allow dark matter particles to occasionally capture individual baryon particles. This motivates
 an alternative solution to the relative power spectrum problem: changing the relative numbers of DM and baryon particles so that the per-particle mass is the same. For equivalent particle load this reduces the spatial resolution in the baryons by a factor of $\Omega_\mathrm{CDM}/\Omega_\mathrm{b} \sim 5$, which may not be desirable. However, it completely avoids the problem of unphysical particle captures and scatterings and, unlike the Lagrangian glass, does not introduce $k^4$ noise. Figure~\ref{fig:adaptive} shows the results of a simulation using this technique, confirming that it is also able to reproduce the baryon to DM power spectrum ratio on large scales at the cost of some Poisson noise in the power spectrum arising from poorer sampling.
-\AFR{Chris showed that oversampling one of the species caused very strange power spectra at high-z, it looked quite suspicious. It would be great to add an appendix redoing the comparison at z=9 or so.} 
+
+Figure~\ref{fig:adaptivez9} shows the results of our simulations at $z=9$, where the linear theory transfer functions differ substantially more. Agreement is noticeably worse at $z=9$, especially for the baryons. This is expected: at $z=9$ the total clustering from structure is a factor of $0.09$ smaller than at $z=2$, and thus the  glass noise dominates at larger scales. The agreement is still reasonable \spb{Can I subtract the glass noise?} for the glass noise simulation. The simulation in which baryons are undersampled suffers from substantial sampling noise due to the large number of Fourier modes which do not contain any particles. All simulations agree for the cold dark matter.
 
 Finally, we have checked that simulations which include adaptive gravitational softenings or disable the short-range tree force both reproduce the linear theory power spectra ratios on large scales, as suggested by Ref.~\cite{Angulo:2013}. Adaptive gravitational softenings avoid unphysical scatterings because the gravitational force is suppressed on scales less than that of the long-range particle mesh grid (in our simulations, 1/2 the mean interparticle spacing). Note that at high redshift, when the particle distribution is homogeneous, adaptive gravitational softenings are equivalent to disabling the short-range tree force.
 Figure~\ref{fig:adaptive} shows the results, demonstrating that the loss of resolution is similar to undersampling the baryonic particles. Note that if a single particle is of sufficiently low mass to be Jeans stable, adaptive softenings are the physical thing to do \cite{Fire2:2018}. However, our simulations are of relatively low resolution and our particles are not near this threshold.
 
-Compared to our preferred technique of using a Lagrangian glass for the baryonic particles, Figure~\ref{fig:adaptive} shows that both baryon undersampling and adaptive softenings produce similar results for the power spectrum. We prefer the use of Lagrangian glass because undersampling of baryons will negatively affect star formation models (which would be under-resolved), while using adaptive softenings leads to poor resolution in low-density areas, such as those which give rise to the Lyman-alpha forest.
+Compared to our preferred technique of using a Lagrangian glass for the baryonic particles, Figure~\ref{fig:adaptive} shows that both baryon undersampling and adaptive softenings produce similar results for the power spectrum. We prefer the use of Lagrangian glass because undersampling of baryons will negatively affect star formation models (which would be under-resolved), while using adaptive softenings leads to poor resolution in low-density areas, such as those which give rise to the \Lya~forest.
+
+\subsection{Lyman-Alpha Forest Flux Power Spectrum}
+
+\begin{figure}
+% \includegraphics[width=0.5\textwidth]{plots/oversample_2_relpower.pdf}
+%   \includegraphics[width=0.5\textwidth]{plots/oversample_2_class.pdf}
+\caption{Results for a $60$ h/Mpc simulation with $512^3$ particles as used for the \Lya~forest. (Left) Ratio of gas to CDM power spectra, $P_\mathrm{bar}/P_\mathrm{CDM}(k)$, at $z=2$ for the simulation (solid) and linear theory from CAMB (dash). (Right) Ratio of simulated to linear power spectra, $P_\mathrm{sim}/P_\mathrm{CLASS}(k)$ for gas (orange) and CDM (blue).}
+\label{fig:lyamatter}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=0.5\textwidth]{plots/flux_power_2_200.pdf}
+\includegraphics[width=0.5\textwidth]{plots/flux_power_3_400.pdf}
+\caption{Effect of separate transfer functions on the \Lya~forest flux power spectrum. Shown is $P_\mathrm{species}/P_\mathrm{total}(k)$, so that more power for a separate transfer function is $\geq 1$. Shown are both the raw results and the results after normalising to the same observed mean flux. Vertical lines show the scales measured by SDSS.
+(Left) At $z=2.2$ (Right) At $z=3.4$. }
+\label{fig:lyaflux}
+\end{figure}
+
+Thus far we have used idealised simulations in which the baryons are purely gravitational: pressure forces have been disabled. In this section we show how much separate transfer functions affect a realistic multiple fluid simulation of the \Lya~forest. We have performed two simulations with $\sigma_8 = 0.8$, $2\times 512^3$ particles and a $60$ h/Mpc box, standard parameters for resolving the \Lya~forest flux power spectrum. One simulation (FOREST) uses different transfer functions for the baryons and CDM, a grid for the CDM and a glass for the baryons. The other (TOTFOREST) uses the total matter power spectrum for both species \spb{Should I use a halfglass for that too? I think yes.}. Figure~\ref{fig:lyamatter} shows the relative matter power spectra (compared to linear theory) for the box with separate transfer functions, and demonstrates that we still achieve reasonable results for a full hydro simulation.
+
+Figure~\ref{fig:lyaflux} shows the relative one dimensional \Lya~forest flux power spectrum for the simulation with separate transfer functions compared to the simulation without, and shows the total overall impact of neglecting the difference between particle species on a modern probe of structure formation. We also show the effect with the spectra scaled to produce the same \Lya~forest mean flux, as is standard practice when performing \Lya~forest analyses to marginalise uncertainty in the number density of intergalactic ionizing photons.
 
 \section{Conclusions}
 
@@ -240,9 +270,7 @@ We have shown that the spurious coupling present in N-body simulations between u
 
 \acknowledgments
 
-We thank Matt McQuinn, Pat McDonald and Matias Zaldarriaga for helpful discussions. SB was supported by NSF grant AST-1817256. Computing resources were provided by NSF XSEDE allocation AST180058.
-\AFR{I'd also like to thank Jose Onorbe and Paco Villaescusa-Navarro, we exchanged several emails about this. We also had several chats with Andrew Pontzen, Martin Rey and Tom Kitching, here at UCL.}
-\YF{And Yin Li who suggested me to implement the damping term, and validated the initial glass implementation with me.})
+We thank Tom Kitching, Yin Li, Pat McDonald, Matt McQuinn, Jose Onorbe, Andrew Pontzen, Martin Rey, Francisco Villaescusa-Navarro and Matias Zaldarriaga for helpful discussions. SB was supported by NSF grant AST-1817256. Computing resources were provided by NSF XSEDE allocation AST180058.
 
 \bibliographystyle{JHEP}
 \bibliography{offset}
