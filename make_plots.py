@@ -10,17 +10,17 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
 
 simnames = {"L1000-baronlyglass": "BIGGLASS", "L300-adaptive": "ADAPTIVE", "L300-baryonlyglass-3": "HALFGLASS",
-            "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID"
+            "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID", "L60-total" : "LYATOTAL", "L60-baronlyglass" : "LYAGLASS"
            }
 
 lss = {"L1000-baronlyglass": "-", "L300-adaptive": "-.", "L300-baryonlyglass-3": "--",
-       "L300-oversample": "-", "L300" : "-"
+        "L300-oversample": "-", "L300" : "-", "L60-total" : "-", "L60-baronlyglass" : "--"
       }
 colors = {"L1000-baronlyglass": "blue", "L300-adaptive": '#1f77b4', "L300-baryonlyglass-3": '#d62728',
-          "L300-oversample": '#2ca02c', "L300" : '#bcbd22'
+          "L300-oversample": '#2ca02c', "L300" : '#bcbd22', "L60-total" : "brown", "L60-baronlyglass" : "blue"
          }
 colorsbar = {"L1000-baronlyglass": '#bcbdff', "L300-adaptive": "#7f7f7f", "L300-baryonlyglass-3": '#d627ff',
-             "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen'
+             "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen', "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff"
             }
 datadir = "powers"
 
@@ -66,8 +66,12 @@ def get_saved_power(sdir, redshift, sp, pkc, kpc=True):
 
 def get_class_power(z, camb_transfer):
     """Find the class baryon and DM power spectrum. Only works for snapshots at integer redshift."""
-    camb_trans = np.loadtxt(os.path.join(camb_transfer, "transfer.dat-"+str(int(np.round(z)))))
-    camb_mat = np.loadtxt(os.path.join(camb_transfer, "matterpow.dat-"+str(int(np.round(z)))))
+    try:
+        camb_trans = np.loadtxt(os.path.join(camb_transfer, "transfer.dat-"+str(int(np.round(z)))))
+        camb_mat = np.loadtxt(os.path.join(camb_transfer, "matterpow.dat-"+str(int(np.round(z)))))
+    except IOError:
+        camb_trans = np.loadtxt(os.path.join(camb_transfer, "transfer.dat-%.1f" % z))
+        camb_mat = np.loadtxt(os.path.join(camb_transfer, "matterpow.dat-%.1f" % z))
     intptot = scipy.interpolate.interp1d(camb_mat[:,0], camb_mat[:,1])
     intpdm = scipy.interpolate.interp1d(camb_trans[:,0], camb_trans[:,3]/camb_trans[:,5])
     intpbar = scipy.interpolate.interp1d(camb_trans[:,0], camb_trans[:,2]/camb_trans[:,5])
@@ -129,5 +133,7 @@ def plot_power(zz, sims, plottitle, total=False):
 if __name__ == "__main__":
     for red in (2, 4, 9):
         plot_power(red, ["L300"], "literature", total=True)
-        plot_power(red, ["L300-baryonlyglass-3", "L1000-baronlyglass"], "halfglass")
-        plot_power(red, ["L300-baryonlyglass-3", "L300-oversample","L300-adaptive"], "oversample")
+        plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L1000-normalpower"], "halfglass")
+        plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
+    for red in (3, 4, 9, 49):
+        plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
