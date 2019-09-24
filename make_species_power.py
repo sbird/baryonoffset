@@ -18,7 +18,16 @@ def sptostr(sp):
 
 def compute_power(output, Nmesh=1024, species=1, spec2 = None):
     """Compute the compensated power spectrum from a catalogue."""
-    catnu = BigFileCatalog(output, dataset=str(species)+'/', header='Header')
+    #If there are stars present, treat them as baryons
+    if species == 0:
+        try:
+            catnu = MultipleSpeciesCatalog(["gas", "star"],
+                BigFileCatalog(output, dataset='0/', header='Header'),
+                BigFileCatalog(output, dataset='4/', header='Header'))
+        except:
+            catnu = BigFileCatalog(output, dataset='0/', header='Header')
+    else:
+        catnu = BigFileCatalog(output, dataset=str(species)+'/', header='Header')
     sp = sptostr(species)
     sp2 = sptostr(spec2)
     outfile = path.join(output,"../power-"+sp+sp2+"-%.4f.txt" % catnu.attrs["Time"][0])
