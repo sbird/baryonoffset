@@ -3,7 +3,7 @@ import os.path as path
 import sys
 import glob
 import numpy
-from nbodykit.lab import BigFileCatalog,FFTPower
+from nbodykit.lab import BigFileCatalog,FFTPower,MultipleSpeciesCatalog
 import timeit
 
 def sptostr(sp):
@@ -20,20 +20,19 @@ def compute_power(output, Nmesh=1024, species=1, spec2 = None):
     """Compute the compensated power spectrum from a catalogue."""
     #If there are stars present, treat them as baryons
     if species == 0:
-        try:
-            catnu = MultipleSpeciesCatalog(["gas", "star"],
-                BigFileCatalog(output, dataset='0/', header='Header'),
-                BigFileCatalog(output, dataset='4/', header='Header'))
-        except:
-            catnu = BigFileCatalog(output, dataset='0/', header='Header')
+        catnu = MultipleSpeciesCatalog(["gas", "star"],
+            BigFileCatalog(output, dataset='0/', header='Header'),
+            BigFileCatalog(output, dataset='4/', header='Header'))
+        time = catnu.attrs["gas.Time"][0]
     else:
         catnu = BigFileCatalog(output, dataset=str(species)+'/', header='Header')
+        time = catnu.attrs["Time"][0]
     sp = sptostr(species)
     sp2 = sptostr(spec2)
-    outfile = path.join(output,"../power-"+sp+sp2+"-%.4f.txt" % catnu.attrs["Time"][0])
+    outfile = path.join(output,"../power-"+sp+sp2+"-%.4f.txt" % time)
     if path.isfile(outfile):
         return
-    catnu.to_mesh(Nmesh=Nmesh, window='cic', compensated=True, interlaced=True)
+    catnu.to_mesh(Nmesh=Nmesh, resampler='cic', compensated=True, interlaced=True, )
     if spec2 is not None:
         catcdm = BigFileCatalog(output, dataset=str(spec2)+'/', header='Header')
         catcdm.to_mesh(Nmesh=Nmesh, window='cic', compensated=True, interlaced=True)
