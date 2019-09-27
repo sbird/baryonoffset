@@ -5,25 +5,30 @@ import numpy as np
 import scipy.interpolate
 
 import matplotlib
-matplotlib.use("PDF")
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
+from fake_spectra import spectra
+matplotlib.use("PDF")
 
 simnames = {"L1000-baronlyglass": "BIGGLASS", "L300-adaptive": "ADAPTIVE", "L300-baronlyglass": "HALFGLASS",
-            "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID", "L60-total" : "LYATOTAL", "L60-baronlyglass" : "LYAGLASS",
+            "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID", "L120-total" : "LYATOTAL", "L120-baronlyglass" : "LYAGLASS",
+            "L60-total" : "LYATOTAL", "L60-baronlyglass" : "LYAGLASS",
             "L300-hydro": "HYDROGLASS",
            }
 
 lss = {"L1000-baronlyglass": "-", "L300-adaptive": "-.", "L300-baronlyglass": "--",
-        "L300-oversample": "-", "L300" : "-", "L60-total" : "-", "L60-baronlyglass" : "--",
+        "L300-oversample": "-", "L300" : "-", "L120-total" : "-", "L120-baronlyglass" : "--",
+        "L60-total" : "-", "L60-baronlyglass" : "--",
         "L300-hydro": "-.",
       }
 colors = {"L1000-baronlyglass": "blue", "L300-adaptive": '#1f77b4', "L300-baronlyglass": '#d62728',
-          "L300-oversample": '#2ca02c', "L300" : '#bcbd22', "L60-total" : "brown", "L60-baronlyglass" : "blue",
+          "L300-oversample": '#2ca02c', "L300" : '#bcbd22', "L120-total" : "brown", "L120-baronlyglass" : "blue",
+          "L60-total" : "brown", "L60-baronlyglass" : "blue",
             "L300-hydro": "brown",
          }
 colorsbar = {"L1000-baronlyglass": '#bcbdff', "L300-adaptive": "#7f7f7f", "L300-baronlyglass": '#d627ff',
-             "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen', "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff",
+             "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen', "L120-total" : "yellowgreen", "L120-baronlyglass" : "#bcbdff",
+             "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff",
             "L300-hydro": "orange",
             }
 datadir = "powers"
@@ -139,10 +144,54 @@ def plot_power(zz, sims, plottitle, total=False):
     fig2.savefig(os.path.join(plotdir, plottitle + '_%d_class.pdf' % zz))
     fig2.clf()
 
+def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle):
+    """Plot the effect of this on the Lyman alpha forest mean flux."""
+    fig = Figure()
+    canvas = FigureCanvasPdf(fig)
+    ax = fig.add_subplot(111)
+    fig2 = Figure()
+    canvas2 = FigureCanvasPdf(fig2)
+    ax2 = fig2.add_subplot(111)
+    for nn in nums:
+        sdir1 = os.path.join(os.path.join(datadir, sim1), "output")
+        sdir2 = os.path.join(os.path.join(datadir, sim2), "output")
+        first = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra.hdf5")
+        second = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra.hdf5")
+        #Get flux power without mean flux rescaling
+        kf1, pkf1 = first.get_flux_power_1D()
+        kf2, pkf2 = second.get_flux_power_1D()
+        ax.semilogx(kf1, pkf1/pkf2, label="z=%.1f" % first.red)
+        #Get flux power with mean flux rescaling
+        mf = 0.0023 * (1 + first.red)**3.65
+        kf1, pkf1 = first.get_flux_power_1D(mean_flux_desired=mf)
+        kf2, pkf2 = second.get_flux_power_1D(mean_flux_desired=mf)
+        ax2.semilogx(kf1, pkf1/pkf2, label="z= %.1f" %first.red)
+
+    ax.set_xscale('log')
+    ax.set_xlim(1e-3,2e-2)
+    ax.set_xlabel(r"$k_F$ (s/km)")
+    ax.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
+    ax.set_ylim(0.8, 1.15)
+    ax.legend(loc="lower left")
+    fig.tight_layout()
+    fig.savefig(os.path.join(plotdir, plottitle + '_relflux_nomf.pdf'))
+    fig.clf()
+    ax2.set_xlim(1e-3,2e-2)
+    ax2.set_xlabel(r"$k_F$ (s/km)")
+    ax2.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
+    ax2.set_ylim(0.8, 1.1)
+    ax2.legend(loc="lower left")
+    fig2.tight_layout()
+    fig2.savefig(os.path.join(plotdir, plottitle + '_relflux_mf.pdf'))
+    fig2.clf()
+
 if __name__ == "__main__":
     for red in (49, 2, 4, 9):
         plot_power(red, ["L300"], "literature", total=True)
         plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
         plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
-#     for red in (3, 4, 9, 49):
+#     for red in (2.2, 3.2,4.2, 9):
 #         plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
+    for red in (2.2, 3, 4, 9, 49):
+        plot_power(red, ["L120-total", "L120-baronlyglass" ], "lya120")
+    plot_lyman_alpha_spectra([12, 8, 3], "L120-total", "L120-baronlyglass", "lya120")
