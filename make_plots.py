@@ -144,7 +144,7 @@ def plot_power(zz, sims, plottitle, total=False):
     fig2.savefig(os.path.join(plotdir, plottitle + '_%d_class.pdf' % zz))
     fig2.clf()
 
-def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle):
+def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100):
     """Plot the effect of this on the Lyman alpha forest mean flux."""
     fig = Figure()
     canvas = FigureCanvasPdf(fig)
@@ -158,13 +158,13 @@ def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle):
         first = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra.hdf5")
         second = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra.hdf5")
         #Get flux power without mean flux rescaling
-        kf1, pkf1 = first.get_flux_power_1D()
-        kf2, pkf2 = second.get_flux_power_1D()
+        kf1, pkf1 = first.get_flux_power_1D(tau_thresh=tau_thresh)
+        kf2, pkf2 = second.get_flux_power_1D(tau_thresh=tau_thresh)
         ax.semilogx(kf1, pkf1/pkf2, label="z=%.1f" % first.red)
         #Get flux power with mean flux rescaling
         mf = 0.0023 * (1 + first.red)**3.65
-        kf1, pkf1 = first.get_flux_power_1D(mean_flux_desired=mf)
-        kf2, pkf2 = second.get_flux_power_1D(mean_flux_desired=mf)
+        kf1, pkf1 = first.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
+        kf2, pkf2 = second.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
         ax2.semilogx(kf1, pkf1/pkf2, label="z= %.1f" %first.red)
 
     ax.set_xscale('log')
@@ -194,4 +194,4 @@ if __name__ == "__main__":
 #         plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
     for red in (2.2, 3, 4, 9, 49):
         plot_power(red, ["L120-total", "L120-baronlyglass" ], "lya120")
-    plot_lyman_alpha_spectra([12, 8, 3], "L120-total", "L120-baronlyglass", "lya120")
+    plot_lyman_alpha_spectra([12, 8, 3], "L120-total", "L120-baronlyglass", "lya120", tau_thresh=1e8)
