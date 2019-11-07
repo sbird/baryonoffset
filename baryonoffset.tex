@@ -119,7 +119,7 @@ The basic algorithm of our preferred setup is similar to that presented in Ref~\
   \item Displace the baryon and CDM particles according to their species specific displacement transfer functions.
 \end{enumerate}
 
-We do not use second-order Lagrangian perturbation theory \cite{Scoccimarro:1998}, despite its reduced transients as, to our knowledge, the full species specific velocity and displacement second order transfer functions, including baryon-CDM cross-terms, do not exist in the literature. We defer this to future work. 
+We do not use second-order Lagrangian perturbation theory \cite{Scoccimarro:1998}, despite its reduced transients as, to our knowledge, the full species specific velocity and displacement second order transfer functions, including baryon-CDM cross-terms, do not exist in the literature. We defer this to future work.
 
 \subsection{Grid and Glass Particle Distribution Generation}
 \label{sec:glass}
@@ -219,7 +219,7 @@ Name & Box & $N_\mathrm{CDM}^{1/3}$ & $N_\mathrm{baryon}^{1/3}$ & Comments  \\
 \end{figure}
 
 
-Figure~\ref{fig:offsetgrids} shows the baryon and cold dark matter power spectra for a cosmological simulation, compared to the output of CLASS at the same redshift. This simulation, TWOGRID, was initialized using the standard method of two grids of particles, one for baryons and one for cold dark matter, offset by a constant factor. Figure~\ref{fig:offsetgrids} illustrates the problem we aim to solve. Although the total matter power spectrum obeys the linear predictions, scattering between the baryon and DM particles causes the DM power spectrum to be over-predicted and the baryon power spectrum to be under-predicted, leading to an error in the relative power spectrum. 
+Figure~\ref{fig:offsetgrids} shows the baryon and cold dark matter power spectra for a cosmological simulation, compared to the output of CLASS at the same redshift. This simulation, TWOGRID, was initialized using the standard method of two grids of particles, one for baryons and one for cold dark matter, offset by a constant factor. Figure~\ref{fig:offsetgrids} illustrates the problem we aim to solve. Although the total matter power spectrum obeys the linear predictions, scattering between the baryon and DM particles causes the DM power spectrum to be over-predicted and the baryon power spectrum to be under-predicted, leading to an error in the relative power spectrum.
 \AFR{Do we really understand why the measured high-k power is below linear theory? I find it very suspicious.}\spb{It is not really suspicious: it is just the 1-halo term from the particle grid. I will mark the Nyquist frequency on the plot and then it will be clearer.}
 This problem has been discussed in, for example, Ref.~\cite{Angulo:2013}, although the magnitude of the error in our simulation does not match their results, presumably because of differences in the setting up of the regular grid.
 
@@ -253,9 +253,9 @@ Compared to our preferred technique of using a Lagrangian glass for the baryonic
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=0.5\textwidth]{plots/flux_power_2_200.pdf}
-\includegraphics[width=0.5\textwidth]{plots/flux_power_3_400.pdf}
-\caption{Effect of separate transfer functions on the \Lya~forest flux power spectrum. Shown is $P_\mathrm{species}/P_\mathrm{total}(k)$, so that more power for a separate transfer function is $\geq 1$. Shown are both the raw results and the results after normalising to the same observed mean flux. Vertical lines show the scales measured by SDSS.
+\includegraphics[width=0.5\textwidth]{plots/lya120_relflux_nomf.pdf}
+\includegraphics[width=0.5\textwidth]{plots/lya120_relflux_mf_t0.pdf}
+\caption{Effect of separate transfer functions on the \Lya~forest flux power spectrum. Shown is $P_F(\mathrm{species})/P_F(\mathrm{total})(k)$, so that the reduction in baryon power due to a species-dependent transfer function produces $P_F(k) \mathrm{ratio} < 1$. Shown are both the raw results and the results after normalising to the same observed mean flux. Vertical lines show the scales measured by SDSS.
 (Left) At $z=2.2$ (Right) At $z=3.4$. }
 \label{fig:lyaflux}
 \end{figure}
