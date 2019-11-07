@@ -23,7 +23,7 @@ WhichSpectrum = 2         # "1" selects Eisenstein & Hu spectrum,
                           # the file 'FileWithInputSpectrum'
                           # otherwise, Efstathiou parametrization is used
 PrimordialIndex = 0.97      # may be used to tilt the primordial index
-PrimordialAmp = 2.14e-11
+PrimordialAmp = 2.14e-9
 
 DifferentTransferFunctions = 1
 ScaleDepVelocity = 1
