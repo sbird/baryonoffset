@@ -208,8 +208,8 @@ if __name__ == "__main__":
         plot_power(red, ["L300"], "literature", total=True)
         plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
         plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
-    for red in (2.2, 3.2,4.2, 9):
-        plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
+#     for red in (2.2, 3.2,4.2, 9):
+#         plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
     for red in (2.2, 3, 4, 9, 49):
         plot_power(red, ["L120-total", "L120-baronlyglass" ], "lya120")
     plot_lyman_alpha_spectra([12, 8, 3], "L120-total", "L120-baronlyglass", "lya120", tau_thresh=1e8)
