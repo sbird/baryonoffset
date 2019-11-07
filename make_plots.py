@@ -1,9 +1,10 @@
 """Plot relative power spectra from simulations with Nbodykit"""
+import re
 import os
 import os.path
+import glob
 import numpy as np
 import scipy.interpolate
-
 import matplotlib
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
