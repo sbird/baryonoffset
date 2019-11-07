@@ -153,8 +153,8 @@ def _fixup_lya_plot(ax):
     ax.set_xlim(1e-3,2e-2)
     ax.set_xlabel(r"$k_F$ (s/km)")
     ax.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
-    ax.set_ylim(0.75, 1.15)
-    ax.legend(loc="lower left")
+    ax.set_ylim(0.85, 1.10)
+    ax.legend(loc="lower right")
 
 def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100):
     """Plot the effect of this on the Lyman alpha forest mean flux."""
