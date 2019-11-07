@@ -145,6 +145,17 @@ def plot_power(zz, sims, plottitle, total=False):
     fig2.savefig(os.path.join(plotdir, plottitle + '_%d_class.pdf' % zz))
     fig2.clf()
 
+def _fixup_lya_plot(ax):
+    """Do the axis sizes, etc, for the flux power plots"""
+    ax.axvline(0.00141, ymin=0, ymax=1, ls="--", color="grey")
+    ax.axvline(0.01778, ymin=0, ymax=1, ls="--", color="grey")
+    ax.set_xscale('log')
+    ax.set_xlim(1e-3,2e-2)
+    ax.set_xlabel(r"$k_F$ (s/km)")
+    ax.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
+    ax.set_ylim(0.75, 1.15)
+    ax.legend(loc="lower left")
+
 def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100):
     """Plot the effect of this on the Lyman alpha forest mean flux."""
     fig = Figure()
@@ -164,41 +175,28 @@ def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100):
         #Get flux power without mean flux rescaling
         kf1, pkf1 = first.get_flux_power_1D(tau_thresh=tau_thresh)
         kf2, pkf2 = second.get_flux_power_1D(tau_thresh=tau_thresh)
-        ax.semilogx(kf1, pkf1/pkf2, label="z=%.1f" % first.red)
+        ax.semilogx(kf1, pkf2/pkf1, label="z=%.1f" % first.red)
         #Get flux power with mean flux rescaling
         mf = 0.0023 * (1 + first.red)**3.65
         kf1, pkf1 = first.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
         kf2, pkf2 = second.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
-        ax2.semilogx(kf1, pkf1/pkf2, label="z= %.1f" %first.red)
+        ax2.semilogx(kf1, pkf2/pkf1, label="z= %.1f" %first.red)
         #Rescaled to have the same T0
         first_rn = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra_rn.hdf5")
         kf1re, pkf1re = first_rn.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
         second_rescaled = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra_rescaled.hdf5")
         kf2re, pkf2re = second_rescaled.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
-        ax3.semilogx(kf1re, pkf1re/pkf2re, label="z= %.1f" %first.red)
+        ax3.semilogx(kf1re, pkf2re/pkf1re, label="z= %.1f" %first.red)
 
-    ax.set_xscale('log')
-    ax.set_xlim(1e-3,2e-2)
-    ax.set_xlabel(r"$k_F$ (s/km)")
-    ax.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
-    ax.set_ylim(0.75, 1.15)
-    ax.legend(loc="lower left")
+    _fixup_lya_plot(ax)
     fig.tight_layout()
     fig.savefig(os.path.join(plotdir, plottitle + '_relflux_nomf.pdf'))
     fig.clf()
-    ax2.set_xlim(1e-3,2e-2)
-    ax2.set_xlabel(r"$k_F$ (s/km)")
-    ax2.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
-    ax2.set_ylim(0.8, 1.1)
-    ax2.legend(loc="lower left")
+    _fixup_lya_plot(ax2)
     fig2.tight_layout()
     fig2.savefig(os.path.join(plotdir, plottitle + '_relflux_mf.pdf'))
     fig2.clf()
-    ax3.set_xlim(1e-3,2e-2)
-    ax3.set_xlabel(r"$k_F$ (s/km)")
-    ax3.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
-    ax3.set_ylim(0.8, 1.1)
-    ax3.legend(loc="upper right")
+    _fixup_lya_plot(ax3)
     fig3.tight_layout()
     fig3.savefig(os.path.join(plotdir, plottitle + '_relflux_mf_t0.pdf'))
     fig3.clf()
