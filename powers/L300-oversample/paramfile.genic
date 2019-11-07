@@ -9,6 +9,8 @@ Seed = 101170    #  seed for IC-generator
 ProduceGas = 1
 RadiationOn = 1
 
+MakeGlassGas = 0
+MakeGlassCDM = 0
 Omega0 = 0.3 # Total matter density  (at z=0)
 OmegaLambda = 0.7      # Cosmological constant (at z=0)
 OmegaBaryon = 0.05     # Baryon density        (at z=0)
@@ -22,7 +24,7 @@ WhichSpectrum = 2         # "1" selects Eisenstein & Hu spectrum,
                           # the file 'FileWithInputSpectrum'
                           # otherwise, Efstathiou parametrization is used
 PrimordialIndex = 0.97      # may be used to tilt the primordial index
-PrimordialAmp = 2.14e-11
+PrimordialAmp = 2.14e-9
 
 DifferentTransferFunctions = 1
 ScaleDepVelocity = 1

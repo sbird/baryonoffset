@@ -9,7 +9,7 @@ Nmesh = 512
 
 # CPU time -limit
 
-TimeLimitCPU = 17900 # 5 hours
+TimeLimitCPU = 5300 # 5 hours
 
 # Code options
 

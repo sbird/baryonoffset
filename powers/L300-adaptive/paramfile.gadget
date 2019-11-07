@@ -8,8 +8,7 @@ OutputList = "0.02,0.1,0.2,0.25,0.2857143"
 Nmesh = 512
 
 # CPU time -limit
-
-TimeLimitCPU = 17900 # 5 hours
+TimeLimitCPU = 5300 # 5 hours
 
 # Code options
 
@@ -46,8 +45,6 @@ MNue = 0.0
 MNum = 0.0
 MNut = 0.0
 
-
-GravitySofteningGas = 0
 # others
 
 CritPhysDensity = 0       #  critical physical density for star formation in
@@ -59,3 +56,5 @@ SnapshotWithFOF = 0
 FOFHaloLinkingLength = 0.2
 FOFHaloMinLength = 32
 WindModel = nowind
+
+GravitySofteningGas = 0
