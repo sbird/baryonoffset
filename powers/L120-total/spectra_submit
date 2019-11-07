@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --partition=normal
+#SBATCH --job-name=test
+#SBATCH --time=8:50:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mail-type=end
+#SBATCH --mail-user=sbird@ucr.edu
+#SBATCH -A TG-AST180058
+export OMP_NUM_THREADS=272
+python3 flux_power.py output
+#python cambpower.py ICS/40_256_99 --czstr 99 --mnu 0
+

@@ -1,0 +1,42 @@
+#  Relevant files
+
+InitCondFile = output/IC
+OutputDir = output
+TreeCoolFile = TREECOOL_ep_2018p
+OutputList = "0.02,0.1,0.192307692308,0.2,0.208333333333,0.217391304348,0.227272727273,0.238095238095,0.25,0.263157894737,0.277777777778,0.294117647059,0.3125"
+
+# CPU time -limit
+
+TimeLimitCPU = 14400 #= 8 hours
+PartAllocFactor = 2
+
+#  Characteristics of run
+TimeMax = 0.33333
+
+Omega0 = 0.3 # Total matter density  (at z=0)
+OmegaLambda = 0.7      # Cosmological constant (at z=0)
+OmegaBaryon = 0.05     # Baryon density        (at z=0)
+HubbleParam = 0.67      # Hubble paramater (may be used for power spec parameterization)
+
+CoolingOn = 1
+StarformationOn = 1
+RadiationOn = 1
+HydroOn = 1
+DensityIndependentSphOn = 0
+BlackHoleOn = 0
+WindOn = 0
+StarformationCriterion = density
+MassiveNuLinRespOn = 0
+
+#  Further parameters of SPH
+#  #Only kernel supported by fake_spectra
+DensityKernelType = cubic
+InitGasTemp = 270.
+MinGasTemp = 100
+
+#----------------------SFR Stuff-------------------------
+CritOverDensity = 1000   #  overdensity threshold for stars value in units of critical density.
+QuickLymanAlphaProbability = 1 # Set to 1.0 to turn dense gas directly into stars.
+
+SnapshotWithFOF = 0
+WindModel = nowind
