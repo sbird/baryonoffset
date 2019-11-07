@@ -170,15 +170,17 @@ def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100):
         kf2, pkf2 = second.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
         ax2.semilogx(kf1, pkf1/pkf2, label="z= %.1f" %first.red)
         #Rescaled to have the same T0
+        first_rn = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra_rn.hdf5")
+        kf1re, pkf1re = first_rn.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
         second_rescaled = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra_rescaled.hdf5")
         kf2re, pkf2re = second_rescaled.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
-        ax3.semilogx(kf1, pkf1/pkf2re, label="z= %.1f" %first.red)
+        ax3.semilogx(kf1re, pkf1re/pkf2re, label="z= %.1f" %first.red)
 
     ax.set_xscale('log')
     ax.set_xlim(1e-3,2e-2)
     ax.set_xlabel(r"$k_F$ (s/km)")
     ax.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
-    ax.set_ylim(0.8, 1.15)
+    ax.set_ylim(0.75, 1.15)
     ax.legend(loc="lower left")
     fig.tight_layout()
     fig.savefig(os.path.join(plotdir, plottitle + '_relflux_nomf.pdf'))
@@ -195,18 +197,18 @@ def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100):
     ax3.set_xlabel(r"$k_F$ (s/km)")
     ax3.set_ylabel(r'$P_\mathrm{F}(k)$ ratio')
     ax3.set_ylim(0.8, 1.1)
-    ax3.legend(loc="lower left")
+    ax3.legend(loc="upper right")
     fig3.tight_layout()
     fig3.savefig(os.path.join(plotdir, plottitle + '_relflux_mf_t0.pdf'))
     fig3.clf()
 
 if __name__ == "__main__":
-#     for red in (49, 2, 4, 9):
-#         plot_power(red, ["L300"], "literature", total=True)
-#         plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
-#         plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
-#     for red in (2.2, 3.2,4.2, 9):
-#         plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
-#     for red in (2.2, 3, 4, 9, 49):
-#         plot_power(red, ["L120-total", "L120-baronlyglass" ], "lya120")
+    for red in (49, 2, 4, 9):
+        plot_power(red, ["L300"], "literature", total=True)
+        plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
+        plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
+    for red in (2.2, 3.2,4.2, 9):
+        plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
+    for red in (2.2, 3, 4, 9, 49):
+        plot_power(red, ["L120-total", "L120-baronlyglass" ], "lya120")
     plot_lyman_alpha_spectra([12, 8, 3], "L120-total", "L120-baronlyglass", "lya120", tau_thresh=1e8)
