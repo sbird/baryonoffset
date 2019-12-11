@@ -169,26 +169,29 @@ def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100, use_rn
         canvas3 = FigureCanvasPdf(fig3)
         ax3 = fig3.add_subplot(111)
     for nn in nums:
-        sdir1 = os.path.join(os.path.join(datadir, sim1), "output")
-        sdir2 = os.path.join(os.path.join(datadir, sim2), "output")
-        first = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra.hdf5")
-        second = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra.hdf5")
-        #Get flux power without mean flux rescaling
-        kf1, pkf1 = first.get_flux_power_1D(tau_thresh=tau_thresh)
-        kf2, pkf2 = second.get_flux_power_1D(tau_thresh=tau_thresh)
-        ax.semilogx(kf1, pkf2/pkf1, label="z=%.1f" % first.red)
-        #Get flux power with mean flux rescaling
-        mf = 0.0023 * (1 + first.red)**3.65
-        kf1, pkf1 = first.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
-        kf2, pkf2 = second.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
-        ax2.semilogx(kf1, pkf2/pkf1, label="z= %.1f" %first.red)
-        #Rescaled to have the same T0
-        if use_rn:
-            first_rn = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra_rn.hdf5")
-            kf1re, pkf1re = first_rn.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
-            second_rescaled = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra_rescaled.hdf5")
-            kf2re, pkf2re = second_rescaled.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
-            ax3.semilogx(kf1re, pkf2re/pkf1re, label="z= %.1f" %first.red)
+        once = True
+        for ss1, ss2 in zip(sim1, sim2):
+            sdir1 = os.path.join(os.path.join(datadir, ss1), "output")
+            sdir2 = os.path.join(os.path.join(datadir, ss2), "output")
+            first = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra.hdf5")
+            second = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra.hdf5")
+            #Get flux power without mean flux rescaling
+            kf1, pkf1 = first.get_flux_power_1D(tau_thresh=tau_thresh)
+            kf2, pkf2 = second.get_flux_power_1D(tau_thresh=tau_thresh)
+            ax.semilogx(kf1, pkf2/pkf1, label="z=%.1f" % first.red)
+            #Get flux power with mean flux rescaling
+            mf = 0.0023 * (1 + first.red)**3.65
+            kf1, pkf1 = first.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
+            kf2, pkf2 = second.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
+            ax2.semilogx(kf1, pkf2/pkf1, label="z= %.1f" %first.red)
+            #Rescaled to have the same T0
+            if use_rn and once:
+                first_rn = spectra.Spectra(nn, sdir1, None, None, savefile="lya_forest_spectra_rn.hdf5")
+                kf1re, pkf1re = first_rn.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
+                second_rescaled = spectra.Spectra(nn, sdir2, None, None, savefile="lya_forest_spectra_rescaled.hdf5")
+                kf2re, pkf2re = second_rescaled.get_flux_power_1D(mean_flux_desired=mf, tau_thresh=tau_thresh)
+                ax3.semilogx(kf1re, pkf2re/pkf1re, label="z= %.1f" %first.red)
+                once = False
 
     _fixup_lya_plot(ax)
     fig.tight_layout()
@@ -205,8 +208,8 @@ def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100, use_rn
         fig3.clf()
 
 if __name__ == "__main__":
-    plot_lyman_alpha_spectra([12, 8, 3], "L60-total", "L60-baronlyglass", "lya60", tau_thresh=1e8, use_rn=False)
-    plot_lyman_alpha_spectra([12, 8, 3], "L120-total", "L120-baronlyglass", "lya120", tau_thresh=1e8)
+    #plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", "L60-total"], ["L120-baronlyglass", "L60-baronlyglass"], "lya120", tau_thresh=1e3)
+    plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", ], ["L120-baronlyglass", ], "lya120", tau_thresh=1e8)
     for red in (49, 2, 4, 9):
         plot_power(red, ["L300"], "literature", total=True)
         plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
