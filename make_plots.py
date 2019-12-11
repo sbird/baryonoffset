@@ -17,8 +17,8 @@ simnames = {"L1000-baronlyglass": "BIGGLASS", "L300-adaptive": "ADAPTIVE", "L300
             "L300-hydro": "HYDROGLASS",
            }
 
-lss = {"L1000-baronlyglass": "-", "L300-adaptive": "-.", "L300-baronlyglass": "--",
-        "L300-oversample": "-", "L300" : "-", "L120-total" : "-", "L120-baronlyglass" : "--",
+lss = {"L1000-baronlyglass": "--", "L300-adaptive": "-.", "L300-baronlyglass": "-",
+        "L300-oversample": "--", "L300" : "-", "L120-total" : "-", "L120-baronlyglass" : "--",
         "L60-total" : "-", "L60-baronlyglass" : "--",
         "L300-hydro": "-.",
       }
