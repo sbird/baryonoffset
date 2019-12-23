@@ -16,7 +16,7 @@ def sptostr(sp):
         return "nu"
     return ""
 
-def compute_power(output, Nmesh=1024, species=1, spec2 = None):
+def compute_power(output, Nmesh=2048, species=1, spec2 = None):
     """Compute the compensated power spectrum from a catalogue."""
     #If there are stars present, treat them as baryons
     if species == 0:
@@ -36,10 +36,10 @@ def compute_power(output, Nmesh=1024, species=1, spec2 = None):
     if spec2 is not None:
         catcdm = BigFileCatalog(output, dataset=str(spec2)+'/', header='Header')
         catcdm.to_mesh(Nmesh=Nmesh, window='cic', compensated=True, interlaced=True)
-        pkcross = FFTPower(catnu, mode='1d', Nmesh=1024,second = catcdm, dk=5.0e-6)
+        pkcross = FFTPower(catnu, mode='1d', Nmesh=1024,second = catcdm, dk=1.0e-7)
         power = pkcross.power
     else:
-        pknu = FFTPower(catnu, mode='1d', Nmesh=1024, dk=5.0e-6)
+        pknu = FFTPower(catnu, mode='1d', Nmesh=Nmesh, dk=1.0e-7)
         power = pknu.power
     numpy.savetxt(outfile,numpy.array([power['k'], power['power'].real,power['modes']]).T)
     return power
