@@ -16,7 +16,7 @@ def sptostr(sp):
         return "nu"
     return ""
 
-def compute_power(output, Nmesh=2048, species=1, spec2 = None):
+def compute_power(output, Nmesh=1024, species=1, spec2 = None):
     """Compute the compensated power spectrum from a catalogue."""
     #If there are stars present, treat them as baryons
     if species == 0:
