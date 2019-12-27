@@ -1,0 +1,75 @@
+InitCondFile  output/IC_G2/IC
+OutputDir  output
+
+TimeLimitCPU  530000 # 5 hours
+
+TimeMax  0.333333333
+
+Omega0  0.3     # Total matter density  (at z=0)
+OmegaLambda  0.7      # Cosmological constant (at z=0)
+OmegaBaryon  0.05     # Baryon density        (at z=0)
+HubbleParam  0.67      # Hubble paramater 
+
+InitGasTemp  270.
+MinGasTemp  100
+
+PartAllocFactor  2.0
+InfoFile  info.txt
+CpuFile  cpu.txt
+TimingsFile  timings.txt
+SnapshotFileBase  PART
+OutputListFilename  outputs.txt
+OutputListOn  1
+
+
+EnergyFile  energy.txt
+RestartFile  restart
+ResubmitCommand  sbatch 
+BoxSize  300000
+PeriodicBoundariesOn  1
+TimeOfFirstSnapshot  0.02
+CpuTimeBetRestartFile  2.0
+TimeBetStatistics  5.0 
+TimeBegin  0.01 
+TimeBetSnapshot  5.0
+UnitVelocity_in_cm_per_s  1e5
+UnitLength_in_cm   3.085678e21
+UnitMass_in_g  1.989e43
+TreeDomainUpdateFrequency  0.1
+ErrTolIntAccuracy  0.02
+ErrTolForceAcc  0.005
+MinGasHsmlFractional  0.001
+MaxSizeTimestep  0.1
+MinSizeTimestep  0
+MaxRMSDisplacementFac  0.2
+ArtBulkViscConst  0.75
+CourantFac  0.75
+MaxNumNgbDeviation  2
+ComovingIntegrationOn  1
+ICFormat  3
+SnapFormat  3
+NumFilesPerSnapshot  1
+NumFilesWrittenInParallel  1
+ResubmitOn  0
+
+SofteningHalo  39.0625
+SofteningDisk  39.0625
+SofteningBulge  39.0625
+SofteningGas  39.0625
+SofteningStars  39.0625
+SofteningBndry  39.0625
+SofteningHaloMaxPhys  39.0625
+SofteningDiskMaxPhys  39.0625
+SofteningBulgeMaxPhys  39.0625
+SofteningGasMaxPhys  39.0625
+SofteningStarsMaxPhys  39.0625
+SofteningBndryMaxPhys  39.0625
+
+ErrTolTheta   0.5
+DesNumNgb  33
+TypeOfTimestepCriterion  0
+TypeOfOpeningCriterion  1
+
+BufferSize 100
+TreeAllocFactor 0.7
+GravityConstantInternal 0
