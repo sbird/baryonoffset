@@ -20,10 +20,14 @@ def compute_power(output, Nmesh=1024, species=1, spec2 = None):
     """Compute the compensated power spectrum from a catalogue."""
     #If there are stars present, treat them as baryons
     if species == 0:
-        catnu = MultipleSpeciesCatalog(["gas", "star"],
-            BigFileCatalog(output, dataset='0/', header='Header'),
-            BigFileCatalog(output, dataset='4/', header='Header'))
-        time = catnu.attrs["gas.Time"][0]
+        try:
+            catnu = MultipleSpeciesCatalog(["gas", "star"],
+                BigFileCatalog(output, dataset='0/', header='Header'),
+                BigFileCatalog(output, dataset='4/', header='Header'))
+            time = catnu.attrs["gas.Time"][0]
+        except TypeError:
+            catnu = BigFileCatalog(output, dataset=str(species)+'/', header='Header')
+            time = catnu.attrs["Time"][0]
     else:
         catnu = BigFileCatalog(output, dataset=str(species)+'/', header='Header')
         time = catnu.attrs["Time"][0]
