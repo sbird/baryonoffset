@@ -30,7 +30,7 @@ colors = {"L1000-baronlyglass": "blue", "L300-adaptive": '#1f77b4', "L300-baronl
          }
 colorsbar = {"L1000-baronlyglass": '#bcbdff', "L300-adaptive": "#7f7f7f", "L300-baronlyglass": '#d627ff',
              "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen', "L120-total" : "yellowgreen", "L120-baronlyglass" : "#bcbdff",
-             "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff", "L300-Gadget-2": "yellowgreen",
+             "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff", "L300-Gadget-2": "orange",
             "L300-hydro": "orange",
             }
 datadir = "powers"
@@ -91,7 +91,7 @@ def get_class_power(z, camb_transfer):
     intpratpk = scipy.interpolate.interp1d(camb_trans[:,0], camb_trans[:,2]/camb_trans[:,3])
     return camb_mat[:,0], intpbarpk, intpdmpk, intptot, intpratpk
 
-def plot_power(zz, sims, plottitle, total=False):
+def plot_power(zz, sims, plottitle, total=False, ymax=1.15):
     """Check the initial power against linear theory and a linearly grown IC power"""
 
     #Check types have the same power
@@ -140,7 +140,7 @@ def plot_power(zz, sims, plottitle, total=False):
     ax2.set_ylabel(r"$P_\mathrm{SIM} / P_\mathrm{CLASS} (k, z=%d)$" % zz )
     ax2.set_xscale('log')
     ax2.set_xlim(xmin/2., 2)
-    ax2.set_ylim(0.9, 1.15)
+    ax2.set_ylim(0.9, ymax)
     ax2.legend(loc="upper left")
     fig2.tight_layout()
     fig2.savefig(os.path.join(plotdir, plottitle + '_%d_class.pdf' % zz))
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", ], ["L120-baronlyglass", ], "lya120", tau_thresh=1e8)
     for red in (49, 2, 4, 9):
         plot_power(red, ["L300"], "literature", total=True)
-        plot_power(red, ["L300", "L300-Gadget-2"], "gadget2")
+        plot_power(red, ["L300", "L300-Gadget-2"], "gadget2", ymax=1.20)
         plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
         plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
 #     for red in (2.2, 3.2,4.2, 9):
