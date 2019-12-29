@@ -13,24 +13,24 @@ matplotlib.use("PDF")
 
 simnames = {"L1000-baronlyglass": "BIGGLASS", "L300-adaptive": "ADAPTIVE", "L300-baronlyglass": "HALFGLASS",
         "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID", "L120-total" : "LYATOTAL",
-        "L120-baronlyglass" : "LYAGLASS", "L300-Gadget-2": "GADGET2",
+        "L120-baronlyglass" : "LYAGLASS", "L300-Gadget-2": "GADGET2", "L300-norad": "NORAD",
             "L60-total" : "LYATOTAL", "L60-baronlyglass" : "LYAGLASS",
             "L300-hydro": "HYDROGLASS",
            }
 
 lss = {"L1000-baronlyglass": "--", "L300-adaptive": "-.", "L300-baronlyglass": "-",
         "L300-oversample": "--", "L300" : "-", "L120-total" : "-", "L120-baronlyglass" : "--",
-        "L60-total" : "-", "L60-baronlyglass" : "--", "L300-Gadget-2" : "--",
+        "L60-total" : "-", "L60-baronlyglass" : "--", "L300-Gadget-2" : "--", "L300-norad" : "--",
         "L300-hydro": "-.",
       }
 colors = {"L1000-baronlyglass": "blue", "L300-adaptive": '#1f77b4', "L300-baronlyglass": '#d62728',
           "L300-oversample": '#2ca02c', "L300" : '#bcbd22', "L120-total" : "brown", "L120-baronlyglass" : "blue",
-          "L60-total" : "brown", "L60-baronlyglass" : "blue", "L300-Gadget-2" : "brown",
+          "L60-total" : "brown", "L60-baronlyglass" : "blue", "L300-Gadget-2" : "brown", "L300-norad" : "brown",
             "L300-hydro": "brown",
          }
 colorsbar = {"L1000-baronlyglass": '#bcbdff', "L300-adaptive": "#7f7f7f", "L300-baronlyglass": '#d627ff',
              "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen', "L120-total" : "yellowgreen", "L120-baronlyglass" : "#bcbdff",
-             "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff", "L300-Gadget-2": "orange",
+             "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff", "L300-Gadget-2": "orange", "L300-norad": "orange",
             "L300-hydro": "orange",
             }
 datadir = "powers"
@@ -213,6 +213,7 @@ if __name__ == "__main__":
     plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", ], ["L120-baronlyglass", ], "lya120", tau_thresh=1e8)
     for red in (49, 2, 4, 9):
         plot_power(red, ["L300"], "literature", total=True)
+#         plot_power(red, ["L300", "L300-norad"], "radtest")
         plot_power(red, ["L300", "L300-Gadget-2"], "gadget2", ymax=1.20)
         plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
         plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
