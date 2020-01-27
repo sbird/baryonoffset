@@ -24,7 +24,7 @@ lss = {"L1000-baronlyglass": "--", "L300-adaptive": "-.", "L300-baronlyglass": "
         "L300-hydro": "-.",
       }
 colors = {"L1000-baronlyglass": "blue", "L300-adaptive": '#1f77b4', "L300-baronlyglass": '#d62728',
-          "L300-oversample": '#2ca02c', "L300" : '#bcbd22', "L120-total" : "brown", "L120-baronlyglass" : "blue",
+          "L300-oversample": '#2ca02c', "L300" : 'orange', "L120-total" : "brown", "L120-baronlyglass" : "blue",
           "L60-total" : "brown", "L60-baronlyglass" : "blue", "L300-Gadget-2" : "brown", "L300-norad" : "brown",
             "L300-hydro": "brown",
          }
@@ -100,7 +100,7 @@ def plot_power(zz, sims, plottitle, total=False, ymax=1.15):
     ax = fig.add_subplot(111)
 
     xmin = 0.1
-    ymin = 0.92
+    ymin = 0.9
     fig2 = Figure()
     canvas2 = FigureCanvasPdf(fig2)
     ax2 = fig2.add_subplot(111)
@@ -140,7 +140,7 @@ def plot_power(zz, sims, plottitle, total=False, ymax=1.15):
     ax2.set_ylabel(r"$P_\mathrm{SIM} / P_\mathrm{CLASS} (k, z=%d)$" % zz )
     ax2.set_xscale('log')
     ax2.set_xlim(xmin/2., 2)
-    ax2.set_ylim(0.9, ymax)
+    ax2.set_ylim(ymin, ymax)
     ax2.legend(loc="upper left")
     fig2.tight_layout()
     fig2.savefig(os.path.join(plotdir, plottitle + '_%d_class.pdf' % zz))
