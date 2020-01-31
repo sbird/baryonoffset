@@ -63,10 +63,10 @@ def modecount_rebin(kk, pk, modes, pkc, minmodes=10, ndesired=100):
     pk_list = np.array(pk_list) * pkc(k_list)
     return (k_list, pk_list)
 
-def get_saved_power(sdir, redshift, sp, kpc=True):
+def get_saved_power(sdir, redshift, sp, kpc=True, out = "output"):
     """Load a saved power spectrum from a file."""
     scale = 1./(1+redshift)
-    fname = os.path.join(sdir, "output/%s-%.4f.txt" % (sp, scale))
+    fname = os.path.join(sdir, out+"/%s-%.4f.txt" % (sp, scale))
     pkk = np.loadtxt(fname)
     ii = np.where((pkk[:,2] >= 1)*(pkk[:,0] > 0))[0]
     #Convert to Mpc/h units
@@ -91,7 +91,7 @@ def get_class_power(z, camb_transfer):
     intpratpk = scipy.interpolate.interp1d(camb_trans[:,0], camb_trans[:,2]/camb_trans[:,3])
     return camb_mat[:,0], intpbarpk, intpdmpk, intptot, intpratpk
 
-def plot_power(zz, sims, plottitle, total=False, ymax=1.15):
+def plot_power(zz, sims, plottitle, total=False, ymax=1.15, out="output"):
     """Check the initial power against linear theory and a linearly grown IC power"""
 
     #Check types have the same power
@@ -109,8 +109,8 @@ def plot_power(zz, sims, plottitle, total=False, ymax=1.15):
         classkk, classbarpk, classdmpk, classtot, classrat = get_class_power(zz, os.path.join(datadir, ss))
         if ss == sims[0]:
             ax.plot(classkk, classbarpk(classkk)/ classdmpk(classkk), ls=":", label='CLASS', color="grey")
-        kkcdm, pkcdm, modecdm = get_saved_power(sdir, zz, "power-DM")
-        kkbar, pkbar, modebar = get_saved_power(sdir, zz, "power-bar")
+        kkcdm, pkcdm, modecdm = get_saved_power(sdir, zz, "power-DM", out=out)
+        kkbar, pkbar, modebar = get_saved_power(sdir, zz, "power-bar", out=out)
         #Note k in kpc/h
         ax2.axhline(1, ls=":", color="grey")
         kkrat, pkrat = modecount_rebin(kkcdm, pkbar/pkcdm, modecdm, classrat, minmodes = 1, ndesired=500)
@@ -123,7 +123,7 @@ def plot_power(zz, sims, plottitle, total=False, ymax=1.15):
         ax2.plot(kkcdm, pkcdm/classdmpk(kkcdm) , ls=lss[ss], color=colors[ss], label=simnames[ss]+" DM")
         xmin = np.min([xmin, kkcdm[0]])
         if total:
-            kktot, pktot, modetot = get_saved_power(sdir, zz, "powerspectrum", kpc=False)
+            kktot, pktot, modetot = get_saved_power(sdir, zz, "powerspectrum", kpc=False, out=out)
             kktot, pktot = modecount_rebin(kktot, pktot, modetot, classtot)
             ax2.plot(kktot, pktot/classtot(kktot), label=simnames[ss]+" Total", ls=lss[ss], color="black")
 
