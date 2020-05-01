@@ -91,6 +91,38 @@ def get_class_power(z, camb_transfer):
     intpratpk = scipy.interpolate.interp1d(camb_trans[:,0], camb_trans[:,2]/camb_trans[:,3])
     return camb_mat[:,0], intpbarpk, intpdmpk, intptot, intpratpk
 
+def plot_eta(zz, sims, plottitle, out="output"):
+    """Plot the eta, the power difference (which should be constant with redshift)."""
+
+    #Check types have the same power
+    fig = Figure()
+    canvas = FigureCanvasPdf(fig)
+    ax = fig.add_subplot(111)
+
+    xmin = 0.1
+    for ss in sims:
+        sdir = os.path.join(datadir, ss)
+        classkk, classbarpk, classdmpk, classtot, classrat = get_class_power(zz, os.path.join(datadir, ss))
+        classeta = 0.5*(np.sqrt(classbarpk(classkk)) - np.sqrt(classdmpk(classkk)))
+        classetai = scipy.interpolate.interp1d(classkk, classeta)
+        if ss == sims[0]:
+            ax.plot(classkk, classeta, ls=":", label='CLASS', color="grey")
+        kkcdm, pkcdm, modecdm = get_saved_power(sdir, zz, "power-DM", out=out)
+        kkbar, pkbar, modebar = get_saved_power(sdir, zz, "power-bar", out=out)
+        kketa, eta = modecount_rebin(kkcdm, 0.5*(np.sqrt(pkbar) -np.sqrt(pkcdm)), modecdm, classetai, minmodes = 1, ndesired=500)
+        ax.plot(kketa, eta, ls=lss[ss], color=colors[ss], label=simnames[ss])
+        xmin = np.min([xmin, kkcdm[0]])
+
+    ax.set_xlabel("k (h/Mpc)")
+    ax.set_ylabel(r"$\eta = (\delta_b - \delta_c)/2 (k, z=%d)$" % zz )
+    ax.set_xscale('log')
+    ax.set_xlim(xmin/2., 2)
+    ax.set_ylim(-1, 0)
+    ax.legend(loc="lower right")
+    fig.tight_layout()
+    fig.savefig(os.path.join(plotdir, plottitle + '_%d_eta.pdf' % zz))
+    fig.clf()
+
 def plot_power(zz, sims, plottitle, total=False, ymax=1.15, out="output"):
     """Check the initial power against linear theory and a linearly grown IC power"""
 
@@ -212,6 +244,7 @@ if __name__ == "__main__":
     #plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", "L60-total"], ["L120-baronlyglass", "L60-baronlyglass"], "lya120", tau_thresh=1e3)
     plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", ], ["L120-baronlyglass", ], "lya120", tau_thresh=1e8)
     for red in (49, 2, 4, 9):
+        plot_eta(red, ["L300", "L300-baronlyglass", "L300-adaptive"], "halfglass")
         plot_power(red, ["L300"], "literature", total=True)
 #         plot_power(red, ["L300", "L300-norad"], "radtest")
         plot_power(red, ["L300", "L300-Gadget-2"], "gadget2", ymax=1.20)
