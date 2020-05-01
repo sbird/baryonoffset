@@ -118,7 +118,7 @@ def plot_eta(zz, sims, plottitle, out="output"):
     ax.set_xscale('log')
     ax.set_xlim(xmin/2., 2)
     ax.set_ylim(0, 1)
-    ax.legend(loc="lower right")
+    ax.legend(loc="upper right")
     fig.tight_layout()
     fig.savefig(os.path.join(plotdir, plottitle + '_%d_eta.pdf' % zz))
     fig.clf()
