@@ -15,23 +15,23 @@ simnames = {"L1000-baronlyglass": "BIGGLASS", "L300-adaptive": "ADAPTIVE", "L300
         "L300-oversample": "UNDERSAMP", "L300" : "TWOGRID", "L120-total" : "LYATOTAL",
         "L120-baronlyglass" : "LYAGLASS", "L300-Gadget-2": "GADGET2", "L300-norad": "NORAD",
             "L60-total" : "LYATOTAL", "L60-baronlyglass" : "LYAGLASS",
-            "L300-hydro": "HYDROGLASS",
+            "L300-hydro": "HYDROGLASS", "L300-adaptive-ts": "ADAPTIVE-TS", "L300-baronlyglass-large" :"HIRESGLASS"
            }
 
 lss = {"L1000-baronlyglass": "--", "L300-adaptive": "-.", "L300-baronlyglass": "-",
         "L300-oversample": "--", "L300" : "-", "L120-total" : "-", "L120-baronlyglass" : "--",
         "L60-total" : "-", "L60-baronlyglass" : "--", "L300-Gadget-2" : "--", "L300-norad" : "--",
-        "L300-hydro": "-.",
+        "L300-hydro": "-.", "L300-adaptive-ts": ":", "L300-baronlyglass-large" :":"
       }
 colors = {"L1000-baronlyglass": "blue", "L300-adaptive": '#1f77b4', "L300-baronlyglass": '#d62728',
           "L300-oversample": '#2ca02c', "L300" : 'orange', "L120-total" : "brown", "L120-baronlyglass" : "blue",
           "L60-total" : "brown", "L60-baronlyglass" : "blue", "L300-Gadget-2" : "brown", "L300-norad" : "brown",
-            "L300-hydro": "brown",
+            "L300-hydro": "brown", "L300-adaptive-ts": "grey", "L300-baronlyglass-large" :"pink"
          }
 colorsbar = {"L1000-baronlyglass": '#bcbdff', "L300-adaptive": "#7f7f7f", "L300-baronlyglass": '#d627ff',
              "L300-oversample": 'yellowgreen', "L300" : 'yellowgreen', "L120-total" : "yellowgreen", "L120-baronlyglass" : "#bcbdff",
              "L60-total" : "yellowgreen", "L60-baronlyglass" : "#bcbdff", "L300-Gadget-2": "orange", "L300-norad": "orange",
-            "L300-hydro": "orange",
+            "L300-hydro": "orange","L300-adaptive-ts": "darkgrey", "L300-baronlyglass-large" :"magenta"
             }
 datadir = "powers"
 
@@ -215,7 +215,8 @@ if __name__ == "__main__":
         plot_power(red, ["L300"], "literature", total=True)
 #         plot_power(red, ["L300", "L300-norad"], "radtest")
         plot_power(red, ["L300", "L300-Gadget-2"], "gadget2", ymax=1.20)
-        plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-hydro"], "halfglass")
+        plot_power(red, ["L300-baronlyglass", "L1000-baronlyglass", "L300-baronlyglass-large"], "halfglass")
+        plot_power(red, ["L300-baronlyglass", "L300-hydro"], "hydro")
         plot_power(red, ["L300-baronlyglass", "L300-oversample","L300-adaptive"], "oversample")
 #     for red in (2.2, 3.2,4.2, 9):
 #         plot_power(red, ["L60-total", "L60-baronlyglass"], "lya60")
