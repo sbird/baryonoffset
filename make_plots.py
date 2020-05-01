@@ -123,6 +123,32 @@ def plot_eta(zz, sims, plottitle, out="output"):
     fig.savefig(os.path.join(plotdir, plottitle + '_%d_eta.pdf' % zz))
     fig.clf()
 
+def plot_bad_grow_rate(ss, out="output"):
+    """Plot the growing rate of the spurious growing mode."""
+    fig = Figure()
+    canvas = FigureCanvasPdf(fig)
+    ax = fig.add_subplot(111)
+
+    sdir = os.path.join(datadir, ss)
+    zzs = np.array([2,4,9,49])
+    kketa, _, _ = get_saved_power(sdir, 49, "power-DM", out=out)
+    def get_eta(zz):
+        kkcdm, pkcdm, modecdm = get_saved_power(sdir, zz, "power-DM", out=out)
+        kkbar, pkbar, modebar = get_saved_power(sdir, zz, "power-bar", out=out)
+        return 0.5*(np.sqrt(pkcdm) -np.sqrt(pkbar))
+
+    etas = np.array([get_eta(zz) for zz in zzs])
+    for i in range(np.size(zzs)-1):
+        ax.plot(kketa, np.log(etas[i+1]/etas[i])/np.log((1+zzs[i+1])/(1+zzs[i])), label=int(zzs[i]))
+
+    ax.set_xlabel("k (h/Mpc)")
+    ax.set_xscale('log')
+    ax.legend(loc="upper right")
+    fig.tight_layout()
+    fig.savefig(os.path.join(plotdir, "twogrid_eta_growrate.pdf"))
+    fig.clf()
+
+
 def plot_power(zz, sims, plottitle, total=False, ymax=1.15, out="output"):
     """Check the initial power against linear theory and a linearly grown IC power"""
 
@@ -241,6 +267,7 @@ def plot_lyman_alpha_spectra(nums, sim1, sim2, plottitle, tau_thresh=100, use_rn
         fig3.clf()
 
 if __name__ == "__main__":
+    plot_bad_grow_rate("L300")
     #plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", "L60-total"], ["L120-baronlyglass", "L60-baronlyglass"], "lya120", tau_thresh=1e3)
     plot_lyman_alpha_spectra([12, 8, 3], ["L120-total", ], ["L120-baronlyglass", ], "lya120", tau_thresh=1e8)
     for red in (49, 2, 4, 9):
