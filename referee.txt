@@ -1,0 +1,77 @@
+We thank the referee for their careful and considered report. We have
+attempted to address all their comments. Minor comments were addressed
+in the text, and we discuss their major comments in more detail below.
+
+>A) While it is clear that the ”twogrid” set-up has the known problems,
+>it is not clear to me whether the specific ”twogrid” set-up that the authors
+>describe in Section 2.3 is in fact a stable configuration in the absence of
+>perturbations. Can the authors clarify if this is the case and whether this
+>has any impact on their results?
+
+We have run a small simulation with zero initial displacemet using twogrid to
+confirm it is completely stable in the absence of perturbations and added
+a note on this to the paper.
+
+> B) Connected to this, the authors claim that the shift between CDM and
+> baryons that they apply breaks the isotropy, and that this is the reason for the
+> problems of the ”twogrid” set-up.
+> Since no quantitative arguments are brought forward, this should be more clearly marked
+> as speculative, or improved. I don’t think having a better understanding of
+> the origin is however necessary for this paper, the results stand (as I said
+> above) for themselves.
+
+We have reworded this section of the paper (and the conclusions), labelling it
+as speculative and incorporating the suggestions of the referee.
+
+> C) Again, along the same lines, the authors claim in the conclusions that
+> the ”offset vector between the two grids breaks the anisotropy [.] and gen-
+> erates an early time transient”. This is never shown, and I don’t believe it
+> to be the case. It would be more illustrative if the authors showed some-
+> where also the orthogonal component to the total matter density, namely
+> their η = (δb − δc )/2. I suspect that this has a spurious growing mode in
+> the ”twogrid” case, which is not present in the ”halfglass” case. This is
+> trivially produced from CLASS and the data the authors already have at
+> hand. A transient would imply that Pηη is already wrong at very early times
+> (say z=50 or 25) and then just persists (or decays), while a spurious growing
+> mode would make the disagreement increase steadily over time. The authors
+> should thus reconsider whether they really ”discuss how linear perturbation
+> theory can explain the discrepancy that occurs with two offset grids”, as they
+> 2 say in the introduction. Also seeing the ”twogrid” results in comparison at
+> z=9 would be illustrative.
+
+We have added the z=9 results to figures 1 and 2 and added a plot of $\eta$,
+with discussion. The referee is quite correct that it is a spurious growing mode
+rather than a transient and we have modified the discussion accordingly.
+
+> D) Finally, I object somewhat to the authors’ discussion of adaptive smooth-
+> ing in the introduction, where they claim that using SPH smoothing lengths
+> for adaptive softening ”cannot be justified on the basis of hydrodynamics”
+> and that ”adaptive softening is simply an easy way of increasing the soften-
+> ing at high redshifts where the problem is most acute”. I disagree with this
+> assessment.
+
+We have reworded this section: our intention was to contrast with the situation
+in, for example, the FIRE zoom simulations. Here adaptive softening is justified
+using a hydrodynamic argument based on pressure forces (a Jeans swindle):
+this argument is not relevant in our coarser resolution cosmological simulations.
+
+> The underlying problem is the particle discretisation with which
+> one approximates a continuous fluid (be it baryons or CDM), and which
+> converges only in the large-N limit. Discreteness errors always have to be
+> suppressed by force softening in order to converge to the fluid limit where
+> the fluid elements (again, baryons or CDM) are not point particles. As a
+> consequence, I the statement that ”adaptive softening strongly suppressed
+> the small-scale clustering of the baryons in low density regions” is not very
+> meaningful. It does so in terms of the power spectrum, but can we trust this
+> ”small-scale clustering” at all if we are in a regime where discreteness errors
+> are seemingly important?
+
+> To establish which approach converges better on
+> small scales, a convergence test to smaller scales would be needed. I under-
+> stand if the authors consider this as future work, but I feel the statements,
+> as they are made, are not founded on quantitative arguments (or literature
+> references).
+
+We have added a convergence test using a larger halfglass setup to show explicitly
+the scales affected by discreteness error (1% at k ~ 1). The adaptive softening produces
+a 2% suppression at (k ~ 0.3).
